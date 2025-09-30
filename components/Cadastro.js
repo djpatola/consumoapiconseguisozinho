@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
-import { createEstoque } from './Api';
+import { createEstoque } from './Api';  // Certifique-se que está importando a função correta
 
 export default function Cadastro({ navigation }) {
   const [form, setForm] = useState({
@@ -18,7 +18,20 @@ export default function Cadastro({ navigation }) {
       Alert.alert('Erro', 'Preencha pelo menos o Nome e a Marca.');
       return;
     }
-    await createEstoque(form);
+
+    // Converte preço para número (float), trata vírgula e vazio
+    const precoNumerico = parseFloat(form.preco.replace(',', '.')) || 0;
+
+    const dadosParaEnviar = {
+      nome: form.nome.trim(),
+      marca: form.marca.trim(),
+      preco: precoNumerico,
+    };
+
+    console.log('Dados a enviar:', dadosParaEnviar);
+
+    await createEstoque(dadosParaEnviar);
+
     navigation.navigate('Home');
   };
 

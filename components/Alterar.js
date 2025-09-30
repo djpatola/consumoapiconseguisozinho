@@ -15,7 +15,19 @@ export default function Alterar({ route, navigation }) {
       Alert.alert('Erro', 'Preencha pelo menos o Nome e a Marca.');
       return;
     }
-    await updateEstoque(form.id, form, navigation);
+
+    const precoNumerico = parseFloat(String(form.preco).replace(',', '.')) || 0;
+
+    const dadosParaEnviar = {
+      nome: form.nome.trim(),
+      marca: form.marca.trim(),
+      preco: precoNumerico,
+    };
+
+    console.log('Dados para atualizar:', dadosParaEnviar);
+
+    // 🔥 aqui usamos "codigo" e não "id"
+    await updateEstoque(form.codigo, dadosParaEnviar, navigation);
   };
 
   return (
